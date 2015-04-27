@@ -11,14 +11,11 @@ public class ImageController {
 		//replace all white pixels with color
 		for ( int y = 0; y < height; y++ ) {
 			for ( int x = 0; x < width; x++ ) {
-				int alpha = orig.getAlpha(x, y);
-				int red = orig.getRed(x, y);
-				int green = orig.getGreen(x, y);
-				int blue = orig.getBlue(x, y);
-				if ( alpha != 0 && red == 255 && green == 255 && blue == 255 ) {
+				int rgb = orig.getRGB(x, y);
+				if ( rgb == 0xffffffff ) {
 					output.setRGB(x, y, r, g, b);
-				} else {
-					output.setRGB(x, y, red, green, blue, alpha);
+				} else if (orig.getAlpha(x, y) != 0) {
+					output.setRGB(x, y, 0,0,0);
 				}
 			}
 		}
@@ -42,8 +39,8 @@ public class ImageController {
 					int p_x = x % p_width;
 					int p_y = y % p_height;
 					output.setRGB(x, y, pattern.getRed(p_x, p_y), pattern.getGreen(p_x, p_y), pattern.getBlue(p_x, p_y), pattern.getAlpha(p_x, p_y));
-				} else {
-					output.setRGB(x, y, rgb);
+				} else if (orig.getAlpha(x, y) != 0) {
+					output.setRGB(x, y, 0,0,0);
 				}
 			}
 		}
